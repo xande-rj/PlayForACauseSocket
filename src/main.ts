@@ -14,7 +14,6 @@ async function bootstrap2() {
     const ioAdapter = new IoAdapter(app);
     app.useWebSocketAdapter(ioAdapter);
     app.enableCors(corsOptions);
-  
     await app.listen(3333);
   
   }

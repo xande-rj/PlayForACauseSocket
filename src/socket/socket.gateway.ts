@@ -1,9 +1,11 @@
+import { Get } from '@nestjs/common';
 import { WebSocketGateway, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, MessageBody, ConnectedSocket, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway()
 export class SocketController implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
+  socketService: any;
 
   handleConnection(client: Socket, ...args: any[]) {
     console.log(`Cliente conectado: ${client.id}`);
@@ -24,5 +26,10 @@ export class SocketController implements OnGatewayConnection, OnGatewayDisconnec
   @SubscribeMessage('chatMessage')
   handleChatMessage(@MessageBody() payload: any, @ConnectedSocket() client: Socket): void {
     this.server.to('chatRoom').emit('chatMessage', payload,client.id);
+  }
+  
+  @Get()
+  findAll() {
+    return this.socketService.port();
   }
 }
